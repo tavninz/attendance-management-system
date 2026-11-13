@@ -1,0 +1,112 @@
+# ==========================================
+# PYTHON / FASTAPI (Backend)
+# ==========================================
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Python compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / packaging
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.pyc
+.hypothesis/
+.pytest_cache/
+.ruff_cache/
+
+# IDEs and Editors (PyCharm, VSCode)
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Local SQLite databases (if used for testing)
+*.db
+*.sqlite3
+
+# Environment variables / secrets (Crucial!)
+.env
+.env.local
+.env.*.local
+
+
+# ==========================================
+# NODE.JS / REACT JS (Frontend)
+# ==========================================
+# Dependencies
+node_modules/
+jspm_packages/
+
+# TypeScript
+*.tsbuildinfo
+.npmrc
+
+# Production builds
+build/
+dist/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional Stylelint cache
+.stylelintcache
+
+# Build output
+.next/
+.nuxt/
+.vuepress/dist/
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.project
+.classpath
+.cproject
+*.launch
+.settings/
+
+# OS metadata
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

@@ -1,0 +1,53 @@
+version: "3.8"
+name: database-server
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    environment:
+      POSTGRES_DB: PoukAdminDB
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: my-secret-pw
+      POSTGRES_HOST_AUTH_METHOD: md5
+    ports:
+      - "9000:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres/init:/docker-entrypoint-initdb.d
+      - ./postgres/config:/etc/postgresql
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - postgres-network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
+    ports:
+      - "5050:80" # Changed from 8000:80 to avoid FastAPI collision
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+      - ./pgadmin/servers.json:/pgadmin4/servers.json
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    networks:
+      - postgres-network
+
+networks:
+  postgres-network:
+    driver: bridge
+    name: postgres-network
+
+volumes:
+  postgres_data:
+  pgadmin_data:
