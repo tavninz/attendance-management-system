@@ -58,9 +58,9 @@ coverage.xml
 *.sqlite3
 
 # Environment variables / secrets (Crucial!)
-.env
-.env.local
-.env.*.local
+#.env
+#.env.local
+#.env.*.local
 
 
 # ==========================================

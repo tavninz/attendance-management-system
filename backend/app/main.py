@@ -5,6 +5,7 @@ from app.api.core.config import settings
 from app.api.core.database import SessionLocal, engine, Base
 from app.api.v1.router import api_router
 from app.api.core.seed import seed_initial_users
+from fastapi.middleware.cors import CORSMiddleware
 
 # Initialize FastAPI app using settings from config.py
 app = FastAPI(
@@ -12,6 +13,16 @@ app = FastAPI(
     version=settings.VERSION,
     docs_url="/docs",
     redoc_url="/redoc",
+)
+
+
+# 👇 Add this CORS configuration
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"], 
+    allow_headers=["*"], 
 )
 
 # Track server start time for uptime calculation
