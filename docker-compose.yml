@@ -1,6 +1,45 @@
 version: "3.8"
+
 name: database-server
+
 services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend-server
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - CORS_ORIGINS=http://localhost:5173,http://localhost:3000
+      # Point directly to the postgres service name and internal port 5432
+      - DATABASE_URL=postgresql://postgres:my-secret-pw@postgres:5432/PoukAdminDB
+    volumes:
+      - ./backend/data:/app/data
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy # Waits until postgres is fully ready to accept connections
+    networks:
+      - postgres-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend-server
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:8000
+      - VITE_WS_URL=ws://localhost:8000
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - postgres-network
+
   postgres:
     image: postgres:15
     container_name: postgres
@@ -33,13 +72,14 @@ services:
       PGADMIN_CONFIG_SERVER_MODE: "False"
       PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
     ports:
-      - "5050:80" # Changed from 8000:80 to avoid FastAPI collision
+      - "5050:80"
     volumes:
       - pgadmin_data:/var/lib/pgadmin
       - ./pgadmin/servers.json:/pgadmin4/servers.json
     restart: unless-stopped
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     networks:
       - postgres-network
 
